@@ -1,36 +1,27 @@
-from taipy import Config
-from taipy import Core
-import taipy as tp
+from taipy.gui import Gui
 
-def build_message(name: str):
-    return f"Hello {name}!"
+# Define the submit action
+def submit_action(state):
+    # Placeholder for the action to be taken when the submit button is pressed.
+    # You might want to send the file to the VM here.
+    # For demonstration, we'll just print the file path.
+    print(f"File submitted: {state.file_selector}")
 
+# Create a GUI object
+gui = Gui()
 
-input_name_data_node_cfg = Config.configure_data_node(id="input_name")
-message_data_node_cfg = Config.configure_data_node(id="message")
-build_msg_task_cfg = Config.configure_task("build_msg", build_message, input_name_data_node_cfg, message_data_node_cfg)
-scenario_cfg = Config.configure_scenario("scenario", task_configs=[build_msg_task_cfg])
-
-# Previous configuration of scenario
-
-page = """
-Name: <|{input_name}|input|>
-<|submit|button|on_action=submit_scenario|>
-
-Message: <|{message}|text|>
+# Define the GUI layout
+gui.add_page(name="Soccer-Futures", page=
 """
+# Soccer Futures
 
-input_name = "Taipy"
-message = None
+Please upload an MP4 file related to soccer futures and click submit.
 
+<|file_selector|id=file_selector|multiple=True|extensions=.csv,.xlsx,.mp4|>
 
-def submit_scenario(state):
-    state.scenario.input_name.write(state.input_name)
-    state.scenario.submit(wait=True)
-    state.message = scenario.message.read()
+<|button|label=Submit|on_action=submit_action|>
+""")
 
-
+# Run the application
 if __name__ == "__main__":
-    tp.Core().run()
-    scenario = tp.create_scenario(scenario_cfg)
-    tp.Gui(page).run()
+    gui.run()
