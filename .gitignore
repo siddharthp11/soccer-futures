@@ -4,3 +4,8 @@ env/
 
 ## python cache: 
 **/__pycache__/
+
+#data
+/data
+
+.DS_Store
