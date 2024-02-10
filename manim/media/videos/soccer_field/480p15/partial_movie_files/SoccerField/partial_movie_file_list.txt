@@ -1,0 +1,2 @@
+# This file is used internally by FFMPEG.
+file 'file:/Users/rishi/Desktop/soccer-futures/manim/media/videos/soccer_field/480p15/partial_movie_files/SoccerField/1185818338_2268332985_2250124262.mp4'
