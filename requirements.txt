@@ -12,12 +12,14 @@ manim==0.18.0
 ManimPango==0.5.0
 mapbox-earcut==1.0.1
 markdown-it-py==3.0.0
+matplotlib
 mdurl==0.1.2
 moderngl==5.10.0
 moderngl-window==2.4.4
 multipledispatch==1.0.0
 networkx==3.2.1
 numpy==1.26.4
+pandas
 Pillow==9.5.0
 pycairo==1.25.1
 pydub==0.25.1
@@ -30,6 +32,7 @@ requests==2.31.0
 rich==13.7.0
 scipy==1.12.0
 screeninfo==0.8.1
+seaborn
 skia-pathops==0.7.4
 srt==3.5.3
 svgelements==1.9.6

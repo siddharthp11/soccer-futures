@@ -1,6 +1,7 @@
 ## virtual envs: 
 env/
 .venv/
+hacklytics/
 
 ## python cache: 
 **/__pycache__/
