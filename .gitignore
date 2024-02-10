@@ -6,6 +6,7 @@ env/
 **/__pycache__/
 
 #data
-/data
+data/
 
+#os
 .DS_Store
