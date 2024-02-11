@@ -10,18 +10,15 @@ from utils.player_ellipses import plot_std_dev_ellipses
 
 import pandas as pd
 
-config.pixel_height = 480
-config.pixel_width = 854
-config.frame_rate = 15
-
 class SoccerFieldScene(Scene):
-    def construct(self, file_path="../test_data/processed_data.csv"):
+    def construct(self):
         soccer_field = SoccerField()
         self.add(soccer_field)
         
         # Extract initial positions for players and ball from the first row of the data
-        position_data = pd.read_csv(file_path)
-        # position_data = position_data.iloc[::10].reset_index()
+        position_data = pd.read_csv("../test_data/processed_data.csv")
+        position_data = position_data.iloc[::10].reset_index()
+
         initial_player_positions, ball_initial_position = find_initial_position(position_data)
 
         # Create player and ball objects
@@ -50,7 +47,7 @@ class SoccerFieldScene(Scene):
             animations.append(MoveToTarget(ball))
 
             # Play all animations simultaneously for a smooth transition
-            self.play(*animations, run_time=0.05)
+            self.play(*animations, run_time=1)
 
         self.wait(1)
 
@@ -111,12 +108,12 @@ class SoccerFieldScene(Scene):
 
 
 class ActivityAreasScene(Scene):
-    def construct(self, file_path="../test_data/processed_data.csv"):
+    def construct(self):
         soccer_field = SoccerField()
         self.add(soccer_field)
 
         # Extract initial positions for players and ball from the first row of the data
-        position_data = pd.read_csv(file_path)
+        position_data = pd.read_csv("../test_data/processed_data.csv")
 
         team1_ellipses_group = VGroup()
         team2_ellipses_group = VGroup()
