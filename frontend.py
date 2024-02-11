@@ -6,7 +6,8 @@ import run_inference
 import streamlit as st
 
 from streamlit_extras.row import row
-from run_inference import next_k_inference
+from run_inference import custom_forward_pass, format_processed_csv
+import charts 
 
 
 if "model" in st.session_state:
@@ -38,16 +39,28 @@ else:
             linear_out = self.linear(lstm_out)
 
             return linear_out
-        
     model = torch.load('model.pt', map_location=torch.device('cpu'))
     st.session_state['model'] = model 
+
+
+if "df" not in st.session_state: 
+    df = format_processed_csv("test_data/processed_data.csv")
+    st.session_state['df'] = df
+        
+    
 
 
 # Define the submit action
 def submit_action(uploaded_files):
     if uploaded_files is not None:
         for uploaded_file in uploaded_files:
+            st.session_state['uploaded_files'] = [uploaded_file]
             st.write(f"File submitted: {uploaded_file.name}")
+
+def run_model():
+    csv_file = "test_data/processed_data.csv"
+    predictions = custom_forward_pass(st.session_state['model'], csv_file) 
+    predictions.to_csv('test_data/predictions.csv', index=False)
 
 title = st.markdown(body="<h1 style='text-align: center; color: white;'>PitchPerfect</h1>", unsafe_allow_html=True)
 desc = st.markdown(body="<h4 style='text-align: center; color: white;'>Your platform to upload and analyze soccer training videos</h4><br>", unsafe_allow_html=True)
@@ -69,30 +82,47 @@ with col2:
     if submit_button:
         submit_action(uploaded_files)
 
-# Embedded Training Videos
-st.markdown(body="<h2 style='text-align: center; color: white;'>Embedded Training Videos</h2>", unsafe_allow_html=True)
-
 st.markdown("""
   <style>
   div.stSpinner > div {
     text-align:center;
     align-items: center;
     justify-content: center;
+    
   }
   </style>""", unsafe_allow_html=True)
-with st.spinner('Computing...'):
-    # time.sleep(5)
-    # video_row = row(2, vertical_align="center")
-    # video_row.video("data/top_view/viz_results/D_20220220_1_0000_0030.mp4")
-    # video_row.video("data/top_view/viz_results/D_20220220_1_0000_0030.mp4")
-    video1, video2 = st.columns(2)
-    # video1 = st.video("data/top_view/viz_results/D_20220220_1_0000_0030.mp4")
-    # video2 = st.video("data/top_view/viz_results/D_20220220_1_0000_0030.mp4")
+
+if 'uploaded_files' in st.session_state:
+    st.markdown(body="<h2 style='text-align: center; color: white;'> Visual Analytics </h2>", unsafe_allow_html=True)
 
 
-def run_model():
-    csv_file = 'inference/data/corner.csv'
-    predictions = run_inference.next_k_inference(st.session_state['model'], csv_file, num_available_frames=30, num_frames_to_predict=20)  
-    print(predictions)
+    frame = st.slider("Select a frame", 0, len(st.session_state["df"]))
+    fig = charts.characteristic_area_by_frame(st.session_state["df"], frame)
+    st.pyplot(fig)
 
-st.button(label='run model', on_click=run_model)
+    player_position = st.slider("Select a player", 0, 21)
+    fig = charts.player_path(st.session_state["df"], player_position)
+    st.pyplot(fig)
+
+    
+
+
+if 'uploaded_files' in  st.session_state or submit_button:
+    # with st.spinner('Computing...'):
+    #     time.sleep(2)
+        
+
+    st.markdown(body="<h2 style='text-align: center; color: white;'> Visualization of Uploaded Game </h2>", unsafe_allow_html=True)
+
+    st.video("SoccerFieldScene.mp4")
+    st.markdown(body="<h2 style='text-align: center; color: white;'> Prediction by LSTM Neural Network </h2>", unsafe_allow_html=True)
+
+    st.video("NewPredictionsScene.mp4")
+    
+    st.markdown(body="<h2 style='text-align: center; color: white;'> Covariance Matrix based Player Activity Areas </h2>", unsafe_allow_html=True)
+
+    st.video("ActivityAreasScene.mp4")
+        
+
+       
+#st.button(label='run model', on_click=run_model)

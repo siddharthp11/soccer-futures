@@ -7,7 +7,7 @@ from mobjects.PlayerActivityMobject import PlayerEllipse
 from utils.transform_coor import transform_coor
 from utils.find_initial_position import find_initial_position
 from utils.player_ellipses import plot_std_dev_ellipses
-
+import time 
 import pandas as pd
 
 class SoccerFieldScene(Scene):
@@ -16,8 +16,10 @@ class SoccerFieldScene(Scene):
         self.add(soccer_field)
         
         # Extract initial positions for players and ball from the first row of the data
-        position_data = pd.read_csv("../test_data/processed_data.csv")
-        position_data = position_data.iloc[::10].reset_index()
+        position_data =pd.read_csv("../test_data/new_predictions.csv")
+#         position_data = pd.read_csv("../test_data/processed_data.csv")
+# #
+#         position_data = position_data.iloc[::10].reset_index()
 
         initial_player_positions, ball_initial_position = find_initial_position(position_data)
 
@@ -113,6 +115,7 @@ class ActivityAreasScene(Scene):
         self.add(soccer_field)
 
         # Extract initial positions for players and ball from the first row of the data
+        
         position_data = pd.read_csv("../test_data/processed_data.csv")
 
         team1_ellipses_group = VGroup()
@@ -173,3 +176,9 @@ class CharacteristicAreaScene(Scene):
                                        angle=angle, ellipse_width=ellipse_width, ellipse_height=ellipse_height, 
                                        player_team=1)
         self.add(team_ellipse)
+
+
+
+
+if __name__ == "__main__":
+    from ..frontend import run_model

@@ -97,13 +97,13 @@ def denormalize_positions(output_names, norm_tensor, max_width=3840, max_height=
     return df
 
 
-def next_k_inference(model, csv_file, num_available_frames, num_frames_to_predict):
+def next_k_inference(model, tensor, num_available_frames, num_frames_to_predict):
     """
     input: test_dataset <torch dataset>. 
     output: list of dataframes, one for each element of the test dataset.
     """
-    input_tensor, output_names = process_csv(csv_file)
-    batch = input_tensor.unsqueeze(0)
+    _, output_names = process_csv('inference/data/corner.csv')
+    batch = tensor.unsqueeze(0)
     current_input = batch[:, :num_available_frames, :]
 
     predictions = current_input.clone()
@@ -131,3 +131,13 @@ if __name__ == '__main__':
     predictions = next_k_inference(csv_file, num_available_frames=30, num_frames_to_predict=20)   
     print(predictions)
     print(predictions.shape)
+
+def format_processed_csv(processed_csv):
+    df = pd.read_csv(processed_csv)
+    df=  sample_rows(df, 15)
+    return df
+
+def custom_forward_pass(model, processed_csv):
+    df = format_processed_csv(processed_csv)
+    t = get_tensor_from_df(df)
+    return next_k_inference(model, t, 30, 20)
