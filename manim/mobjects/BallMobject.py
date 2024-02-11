@@ -1,4 +1,4 @@
-from manim import *
+from manim import VMobject, Circle, GREEN_A
 import numpy as np
 
 class Ball(VMobject):
