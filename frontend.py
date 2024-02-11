@@ -86,13 +86,13 @@ with st.spinner('Computing...'):
     # video_row.video("data/top_view/viz_results/D_20220220_1_0000_0030.mp4")
     # video_row.video("data/top_view/viz_results/D_20220220_1_0000_0030.mp4")
     video1, video2 = st.columns(2)
-    video1 = st.video("data/top_view/viz_results/D_20220220_1_0000_0030.mp4")
-    video2 = st.video("data/top_view/viz_results/D_20220220_1_0000_0030.mp4")
+    # video1 = st.video("data/top_view/viz_results/D_20220220_1_0000_0030.mp4")
+    # video2 = st.video("data/top_view/viz_results/D_20220220_1_0000_0030.mp4")
 
 
 def run_model():
     csv_file = 'inference/data/corner.csv'
-    predictions = run_inference.next_k_inference(csv_file, num_available_frames=30, num_frames_to_predict=20)  
+    predictions = run_inference.next_k_inference(st.session_state['model'], csv_file, num_available_frames=30, num_frames_to_predict=20)  
     print(predictions)
 
 st.button(label='run model', on_click=run_model)
