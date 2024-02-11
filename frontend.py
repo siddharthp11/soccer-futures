@@ -17,11 +17,11 @@ col1, col2 = st.columns(2)
 
 with col1:
     with st.expander("Why use PitchPerfect?"):
-        st.write("Here is some more information!")
+        st.write("Do you want to predict how a given soccer play unfurls in the future from a given position? Pitch Perfect is a data driven solution that would allow you to predict the future of soccer plays unfold from a given position as well as visualize this data in a generated animated video clip form")
     with st.expander("How does it work"):
-        st.write("Here is some more information!")
+        st.write("Our interface takes in an annotated csv file along with an mp4 video of the play and feeds it into a custom LSTM model we have developed to predict the future coordinates of all players and the ball for a short period of time in the future. We then use these coordinates to generate an animated clip of how the play could evolve, along with additional visualizations relating to player hotspots and team dynamic control areas.")
     with st.expander("Future Improvements"):
-        st.write("Here is some more information!")
+        st.write("In the future, we hope to develop an image segmentation model that would essentially allow us to generate the annotations csv file. We could also expand this approach to other sports like basketball or american football to predict plays.")
 
 with col2:
     uploaded_files = st.file_uploader("Choose Files", accept_multiple_files=True, type=['csv', 'mp4'])

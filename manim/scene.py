@@ -27,8 +27,6 @@ class SoccerFieldScene(Scene):
         self.add(players, ball)
 
         # Creating Characteristic Area
-        # player_data = position_data[[f'player_{i}_x', f'player_{i}_y']]
-        print("team1")
         mean_x, mean_y, angle, ellipse_width, ellipse_height = plot_std_dev_ellipses(
             player_data=position_data.iloc[:, :22], 
             player_ids=list(range(11)))
@@ -38,8 +36,6 @@ class SoccerFieldScene(Scene):
         self.add(player_ellipse)
 
         # Creating Characteristic Area
-        # player_data = position_data[[f'player_{i}_x', f'player_{i}_y']]
-        print("team2")
         mean_x, mean_y, angle, ellipse_width, ellipse_height = plot_std_dev_ellipses(
             player_data=position_data.iloc[:, 22:44], 
             player_ids=list(range(11, 22)))
@@ -52,25 +48,34 @@ class SoccerFieldScene(Scene):
 
 
         # Animate movement frame by frame
-        # for _, frame_data in position_data.iterrows():
-        #     animations = []
-        #     # Update positions for players
-        #     for i in range(22):
-        #         player_x_col = f"player_{i}_x"
-        #         player_y_col = f"player_{i}_y"
-        #         new_x, new_y = transform_coor(frame_data[player_x_col], frame_data[player_y_col])
-        #         players[i].generate_target()  # Prepare the target for animation
-        #         players[i].target.move_to((new_x, new_y, 0))
-        #         animations.append(MoveToTarget(players[i]))
+        for frame_n, frame_data in position_data.iterrows():
+            animations = []
+            # Update positions for players
+            for i in range(22):
+                player_x_col = f"player_{i}_x"
+                player_y_col = f"player_{i}_y"
+                new_x, new_y = transform_coor(frame_data[player_x_col], frame_data[player_y_col])
+                players[i].generate_target()  # Prepare the target for animation
+                players[i].target.move_to((new_x, new_y, 0))
+                animations.append(MoveToTarget(players[i]))
 
-        #     # Update ball position
-        #     new_ball_x, new_ball_y = transform_coor(frame_data["ball_x"], frame_data["ball_y"])
-        #     ball.generate_target()
-        #     ball.target.move_to((new_ball_x, new_ball_y, 0))
-        #     animations.append(MoveToTarget(ball))
+            # Update ball position
+            new_ball_x, new_ball_y = transform_coor(frame_data["ball_x"], frame_data["ball_y"])
+            ball.generate_target()
+            ball.target.move_to((new_ball_x, new_ball_y, 0))
+            animations.append(MoveToTarget(ball))
 
-        #     # Play all animations simultaneously for a smooth transition
-        #     self.play(*animations, run_time=0.000000005)
+            # Create ellipses for each team
+            mean_x, mean_y, angle, ellipse_width, ellipse_height = plot_std_dev_ellipses(
+            player_data=position_data.iloc[frame_n, :22], 
+            player_ids=list(range(11)))
+            player_ellipse = PlayerEllipse(mean_x=mean_x, mean_y=mean_y, 
+                                       angle=angle, ellipse_width=ellipse_width, ellipse_height=ellipse_height, 
+                                       player_team=0)
+            animations.append(MoveToTarget(player_ellipse))
+
+            # Play all animations simultaneously for a smooth transition
+            self.play(*animations, run_time=0.000000005)
 
         self.wait(1)
 
