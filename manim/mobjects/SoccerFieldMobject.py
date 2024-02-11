@@ -1,4 +1,4 @@
-from manim import *
+from manim import Mobject, config, Circle, Dot, Line, Rectangle, WHITE, BLACK, ORIGIN, LEFT, RIGHT
 
 class SoccerField(Mobject):
     def __init__(self, field_color=BLACK, **kwargs):

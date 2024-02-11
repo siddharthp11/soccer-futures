@@ -1,4 +1,4 @@
-from manim import *
+from manim import VMobject, Circle, np, RED, BLUE
 
 class SoccerPlayer(VMobject):
     def __init__(self, position, team, **kwargs):
