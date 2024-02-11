@@ -1,3 +1,4 @@
+import time
 import streamlit as st
 from streamlit_extras.row import row
 
@@ -8,13 +9,13 @@ def submit_action(uploaded_files):
             st.write(f"File submitted: {uploaded_file.name}")
 
 title = st.markdown(body="<h1 style='text-align: center; color: white;'>PitchPerfect</h1>", unsafe_allow_html=True)
-desc = st.markdown(body="<h4 style='text-align: center; color: white;'>Your platform to upload and analyze soccer training videos</h4>", unsafe_allow_html=True)
-# Bubbles (information sections)
+desc = st.markdown(body="<h4 style='text-align: center; color: white;'>Your platform to upload and analyze soccer training videos</h4><br>", unsafe_allow_html=True)
+
 col1, col2 = st.columns(2)
 
 with col1:
     with st.expander("Why use PitchPerfect?"):
-        st.write("Do you want to predict how a given soccer play unfurls in the future from a given position? Pitch Perfect is a data driven solution that would allow you to predict the future of soccer plays unfold from a given position as well as visualize this data in a generated animated video clip form")
+        st.write("Do you want to predict how a given soccer play unfurls in the future from a given position? Pitch Perfect is a data driven solution that would allow you to predict the future of soccer plays unfold from a given position as well as visualize this data in a generated animated video clip form.")
     with st.expander("How does it work"):
         st.write("Our interface takes in an annotated csv file along with an mp4 video of the play and feeds it into a custom LSTM model we have developed to predict the future coordinates of all players and the ball for a short period of time in the future. We then use these coordinates to generate an animated clip of how the play could evolve, along with additional visualizations relating to player hotspots and team dynamic control areas.")
     with st.expander("Future Improvements"):
@@ -29,6 +30,20 @@ with col2:
 
 # Embedded Training Videos
 st.markdown(body="<h2 style='text-align: center; color: white;'>Embedded Training Videos</h2>", unsafe_allow_html=True)
-video_row = row(2, vertical_align="center")
-video_row.video("data/top_view/viz_results/D_20220220_1_0000_0030.mp4")
-video_row.video("data/top_view/viz_results/D_20220220_1_0000_0030.mp4")
+
+st.markdown("""
+  <style>
+  div.stSpinner > div {
+    text-align:center;
+    align-items: center;
+    justify-content: center;
+  }
+  </style>""", unsafe_allow_html=True)
+with st.spinner('Computing...'):
+    # time.sleep(5)
+    # video_row = row(2, vertical_align="center")
+    # video_row.video("data/top_view/viz_results/D_20220220_1_0000_0030.mp4")
+    # video_row.video("data/top_view/viz_results/D_20220220_1_0000_0030.mp4")
+    video1, video2 = st.columns(2)
+    video1 = st.video("data/top_view/viz_results/D_20220220_1_0000_0030.mp4")
+    video2 = st.video("data/top_view/viz_results/D_20220220_1_0000_0030.mp4")
