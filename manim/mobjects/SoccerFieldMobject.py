@@ -1,7 +1,7 @@
 from manim import *
 
 class SoccerField(Mobject):
-    def __init__(self, field_color="#3C9D4B", **kwargs):
+    def __init__(self, field_color=BLACK, **kwargs):
         super().__init__(**kwargs)
         self.field_color = field_color
         self.create_field()
@@ -33,26 +33,8 @@ class SoccerField(Mobject):
         goal_area_right.align_to(field, RIGHT).shift(RIGHT/2)
         # 44*18, 24*8
 
-        # Corners (not necessary)
-        # corner_tl = Arc(radius=0.4, start_angle=0, angle=PI/2, color=WHITE).shift(UP * 3.55 + LEFT * 7.25)
-        # corner_tr = Arc(radius=0.4, start_angle=PI/2, angle=PI/2, color=WHITE).shift(UP * 3.55 + RIGHT * 7.25)
-        # corner_bl = Arc(radius=0.4, start_angle=-PI, angle=PI/2, color=WHITE).shift(DOWN * 3.55 + LEFT * 7.25)
-        # corner_br = Arc(radius=0.4, start_angle=-PI/2, angle=PI/2, color=WHITE).shift(DOWN * 3.55 + RIGHT * 7.25)
-        
         # Center spot
         center_spot = Dot(point=ORIGIN, color=WHITE)
 
         # Group everything together and add to the custom Mobject
         self.add(field, center_circle, center_line, penalty_area_left, penalty_area_right, goal_area_left, goal_area_right, center_spot)
-        
-        # # Group everything together
-        # field_group = VGroup(field, center_circle, center_line, penalty_area_left, penalty_area_right, goal_area_left, goal_area_right, center_spot)
-        
-        # # Align the group to the center of the screen
-        # field_group.move_to(ORIGIN)
-        
-        # # Add the field group to the scene
-        # self.add(field_group)
-        
-        # # Save the final frame (since we are not animating anything)
-        # self.wait(1)

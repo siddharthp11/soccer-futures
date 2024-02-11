@@ -4,7 +4,7 @@ env/
 hacklytics/
 
 ## manim media files:
-manim/media/
+manim/media/*
 
 ## python cache: 
 **/__pycache__/
