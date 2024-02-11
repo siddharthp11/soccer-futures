@@ -26,23 +26,31 @@ class SoccerFieldScene(Scene):
         ball_initial_position = (transformed_ball_x, transformed_ball_y)
 
         # Create player and ball objects
-        players = VGroup(*[SoccerPlayer(initial_player_positions[i], team=0 if i < 11 else 1) for i in range(22)])
-        ball = Ball(ball_initial_position)
+        players = VGroup(*[SoccerPlayer(position=initial_player_positions[i], team=0 if i < 11 else 1) for i in range(22)])
+        ball = Ball(position=ball_initial_position)
 
         # Add players and ball to scene
         self.add(players, ball)
 
-        # # Animate movement frame by frame
+        # Animate movement frame by frame
         for _, frame_data in position_data.iterrows():
-            # Update positions for team 1 players
+            animations = []
+            # Update positions for players
             for i in range(22):
                 player_x_col = f"player_{i}_x"
                 player_y_col = f"player_{i}_y"
-                players[i].move_to((frame_data[player_x_col], frame_data[player_y_col], 0))
+                new_x, new_y = transform_coor(frame_data[player_x_col], frame_data[player_y_col])
+                players[i].generate_target()  # Prepare the target for animation
+                players[i].target.move_to((new_x, new_y, 0))
+                animations.append(MoveToTarget(players[i]))
+            
             # Update ball position
-            ball_x_col = "ball_x"
-            ball_y_col = "ball_y"
-            ball.move_to((frame_data[ball_x_col], frame_data[ball_y_col], 0))
-            # Wait for a short duration to visualize the movement
-            self.wait(0.1)
-        self.wait(2)
+            new_ball_x, new_ball_y = transform_coor(frame_data["ball_x"], frame_data["ball_y"])
+            ball.generate_target()
+            ball.target.move_to((new_ball_x, new_ball_y, 0))
+            animations.append(MoveToTarget(ball))
+
+            # Play all animations simultaneously for a smooth transition
+            self.play(*animations, run_time=0.005)
+        
+        self.wait(1)
