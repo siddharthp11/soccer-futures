@@ -26,6 +26,30 @@ class SoccerFieldScene(Scene):
         # Add players and ball to scene
         self.add(players, ball)
 
+        # Creating Characteristic Area
+        # player_data = position_data[[f'player_{i}_x', f'player_{i}_y']]
+        print("team1")
+        mean_x, mean_y, angle, ellipse_width, ellipse_height = plot_std_dev_ellipses(
+            player_data=position_data.iloc[:, :22], 
+            player_ids=list(range(11)))
+        player_ellipse = PlayerEllipse(mean_x=mean_x, mean_y=mean_y, 
+                                       angle=angle, ellipse_width=ellipse_width, ellipse_height=ellipse_height, 
+                                       player_team=0)
+        self.add(player_ellipse)
+
+        # Creating Characteristic Area
+        # player_data = position_data[[f'player_{i}_x', f'player_{i}_y']]
+        print("team2")
+        mean_x, mean_y, angle, ellipse_width, ellipse_height = plot_std_dev_ellipses(
+            player_data=position_data.iloc[:, 22:44], 
+            player_ids=list(range(11, 22)))
+        player_ellipse = PlayerEllipse(mean_x=mean_x, mean_y=mean_y, 
+                                       angle=angle, ellipse_width=ellipse_width, ellipse_height=ellipse_height, 
+                                       player_team=1)
+        self.add(player_ellipse)
+
+
+
 
         # Animate movement frame by frame
         # for _, frame_data in position_data.iterrows():
@@ -63,16 +87,15 @@ class ActivityAreasScene(Scene):
         team2_ellipses_group = VGroup()
 
         # Creating Ellipse Activity Areas
-        animations = []
         for i in range(11):
             player_data = position_data[[f'player_{i}_x', f'player_{i}_y']]
-            mean_x, mean_y, angle, ellipse_width, ellipse_height = plot_std_dev_ellipses(player_data, i)
+            mean_x, mean_y, angle, ellipse_width, ellipse_height = plot_std_dev_ellipses(player_data, [i])
             player_ellipse = PlayerEllipse(mean_x=mean_x, mean_y=mean_y, angle=angle, ellipse_width=ellipse_width, ellipse_height=ellipse_height, player_team=0 if i < 11 else 1)
             team1_ellipses_group.add(player_ellipse)
         
         for i in range(11, 22):
             player_data = position_data[[f'player_{i}_x', f'player_{i}_y']]
-            mean_x, mean_y, angle, ellipse_width, ellipse_height = plot_std_dev_ellipses(player_data, i)
+            mean_x, mean_y, angle, ellipse_width, ellipse_height = plot_std_dev_ellipses(player_data, [i])
             player_ellipse = PlayerEllipse(mean_x=mean_x, mean_y=mean_y, angle=angle, ellipse_width=ellipse_width, ellipse_height=ellipse_height, player_team=0 if i < 11 else 1)
             team2_ellipses_group.add(player_ellipse)
         
@@ -82,4 +105,5 @@ class ActivityAreasScene(Scene):
         self.add(team2_ellipses_group)
         self.play(Create(team2_ellipses_group))
 
+        self.wait(1)
 

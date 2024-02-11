@@ -2,9 +2,9 @@ import numpy as np
 import pandas as pd
 from .transform_coor import transform_coor
 
-def plot_std_dev_ellipses(player_data, player_id):
+def plot_std_dev_ellipses(player_data, player_ids):
     # Apply the custom function to each row of the DataFrame
-    player_data[[f'player_{player_id}_x', f'player_{player_id}_y']] = player_data.apply(lambda row: transform_coor(row[f'player_{player_id}_x'], row[f'player_{player_id}_y']), axis=1, result_type="expand")
+    player_data = apply_transform_coor(player_data, player_ids)
 
     # Calculate mean
     mean_x, mean_y = np.mean(player_data, axis=0)
@@ -27,3 +27,18 @@ def plot_std_dev_ellipses(player_data, player_id):
 
     # We want to return all the data that we need to connstruct the ellipse. 
     return mean_x, mean_y, angle, ellipse_width, ellipse_height
+
+def apply_transform_coor(player_data, player_ids):
+    for id in player_ids:
+        x_col = f"player_{id}_x"
+        y_col = f"player_{id}_y"
+    
+        player_data[[x_col, y_col]] = player_data.apply(
+            lambda row: transform_coor(row[x_col], row[y_col]),
+            axis=1,
+            result_type="expand"
+        )
+    
+    player_data = pd.DataFrame(player_data.values.reshape(-1, 2), columns=['x', 'y'])
+
+    return player_data
