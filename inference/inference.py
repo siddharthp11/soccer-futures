@@ -1,9 +1,9 @@
 from torch.utils.data import Dataset, DataLoader
 import torch
-import pandas as pd
-from process_csv import process_csv, get_tensor_from_df
-import torch
 import torch.nn as nn
+import pandas as pd
+from .process_csv import process_csv
+from inference import model
 
 
 class LSTMWithLinear(nn.Module):
@@ -33,9 +33,6 @@ class LSTMWithLinear(nn.Module):
 
         return linear_out
 
-
-model = torch.load('inference/model.pt', map_location=torch.device('cpu'))
-model.eval()
 
 
 def denormalize_positions(output_names, norm_tensor, max_width=3840, max_height=2160):

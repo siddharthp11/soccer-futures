@@ -1,6 +1,47 @@
 import time
+import torch 
+import torch.nn as nn
+
+import run_inference
 import streamlit as st
+
 from streamlit_extras.row import row
+from run_inference import next_k_inference
+
+
+if "model" in st.session_state:
+    pass
+else: 
+    class LSTMWithLinear(nn.Module):
+        def __init__(self, input_size, hidden_size, output_size, num_layers=1):
+            super(LSTMWithLinear, self).__init__()
+
+            # LSTM layer
+            self.lstm = nn.LSTM(input_size=input_size,
+                                hidden_size=hidden_size,
+                                num_layers=num_layers,
+                                batch_first=True)
+
+            # Linear layer
+            self.linear = nn.Linear(hidden_size, output_size)
+
+        def forward(self, x):
+            # x: input tensor of shape (batch_size, sequence_length, input_size)
+
+            # Passing the input through the LSTM layer
+            # lstm_out: tensor of shape (batch_size, sequence_length, hidden_size)
+            lstm_out, _ = self.lstm(x)
+
+            # Passing the output of the LSTM layer through the linear layer
+            # This operation is applied to each time step, so we use lstm_out
+            # linear_out: tensor of shape (batch_size, sequence_length, output_size)
+            linear_out = self.linear(lstm_out)
+
+            return linear_out
+        
+    model = torch.load('model.pt', map_location=torch.device('cpu'))
+    st.session_state['model'] = model 
+
 
 # Define the submit action
 def submit_action(uploaded_files):
@@ -47,3 +88,11 @@ with st.spinner('Computing...'):
     video1, video2 = st.columns(2)
     video1 = st.video("data/top_view/viz_results/D_20220220_1_0000_0030.mp4")
     video2 = st.video("data/top_view/viz_results/D_20220220_1_0000_0030.mp4")
+
+
+def run_model():
+    csv_file = 'inference/data/corner.csv'
+    predictions = run_inference.next_k_inference(csv_file, num_available_frames=30, num_frames_to_predict=20)  
+    print(predictions)
+
+st.button(label='run model', on_click=run_model)
