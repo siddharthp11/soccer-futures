@@ -1,6 +1,10 @@
 ## virtual envs: 
 env/
 .venv/
+hacklytics/
+
+## manim media files:
+manim/media/*
 
 ## python cache: 
 **/__pycache__/
