@@ -1,4 +1,4 @@
-from manim import VMobject, Circle, GREEN_A
+from manim import VMobject, Circle, GREEN_A, YELLOW_A
 import numpy as np
 
 class Ball(VMobject):
@@ -10,7 +10,7 @@ class Ball(VMobject):
         self.create_ball()
     
     def create_ball(self):
-        ball = Circle(color=GREEN_A, fill_opacity=1)
+        ball = Circle(color=YELLOW_A, fill_opacity=1)
         ball.scale(1/8)
         ball.move_to((self.x, self.y, 0))
         self.add(ball)

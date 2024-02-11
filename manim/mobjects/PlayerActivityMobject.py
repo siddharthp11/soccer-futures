@@ -14,7 +14,6 @@ class PlayerEllipse(VMobject):
         self.createActivityArea()
 
     def createActivityArea(self):
-        print(self.ellipse_width, self.ellipse_height)
         ellipse = Ellipse(width=self.ellipse_width, height=self.ellipse_height, color=self.colors[self.player_team])
         ellipse.set_fill(color=self.colors[self.player_team], opacity=0.5)
         ellipse.rotate(np.radians(self.angle))
