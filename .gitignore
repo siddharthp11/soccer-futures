@@ -8,3 +8,9 @@ manim/media/*
 
 ## python cache: 
 **/__pycache__/
+
+#data
+data/
+
+#os
+.DS_Store
