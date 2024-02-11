@@ -29,16 +29,27 @@ def plot_std_dev_ellipses(player_data, player_ids):
     return mean_x, mean_y, angle, ellipse_width, ellipse_height
 
 def apply_transform_coor(player_data, player_ids):
-    for id in player_ids:
-        x_col = f"player_{id}_x"
-        y_col = f"player_{id}_y"
-    
-        player_data[[x_col, y_col]] = player_data.apply(
-            lambda row: transform_coor(row[x_col], row[y_col]),
-            axis=1,
-            result_type="expand"
-        )
-    
-    player_data = pd.DataFrame(player_data.values.reshape(-1, 2), columns=['x', 'y'])
+    if isinstance(player_data, pd.Series):                                                    #    0       1
+        players = [transform_coor(player_data[i], player_data[i+1]) for i in range(0, 22, 2)] # [(x,y)], (x,y)]
+        player_data = pd.DataFrame(players, columns=['x', 'y'])
 
-    return player_data
+        return player_data
+    else:
+        for id in player_ids:
+            x_col = f"player_{id}_x"
+            y_col = f"player_{id}_y"
+
+            # for index in player_data.index:
+            #     new_coords = transform_coor(player_data.loc[index, x_col], player_data.loc[index, y_col])
+            #     player_data.at[index, x_col] = new_coords[0]
+            #     player_data.at[index, y_col] = new_coords[1]
+
+            player_data[[x_col, y_col]] = player_data.apply(
+                lambda row: transform_coor(row[x_col], row[y_col]),
+                axis=1,
+                result_type="expand"
+            )
+
+        player_data = pd.DataFrame(player_data.values.reshape(-1, 2), columns=['x', 'y'])
+
+        return player_data

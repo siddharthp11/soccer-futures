@@ -1,0 +1,4 @@
+# This file is used internally by FFMPEG.
+file 'file:/Users/harshithgutha/Documents/GitHub/soccer-futures/manim/media/videos/scene/480p15/partial_movie_files/ActivityAreasScene/1185818338_82184075_2823762346.mp4'
+file 'file:/Users/harshithgutha/Documents/GitHub/soccer-futures/manim/media/videos/scene/480p15/partial_movie_files/ActivityAreasScene/624642324_1505580603_393685407.mp4'
+file 'file:/Users/harshithgutha/Documents/GitHub/soccer-futures/manim/media/videos/scene/480p15/partial_movie_files/ActivityAreasScene/624642324_3890345977_3216711166.mp4'
