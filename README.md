@@ -1,5 +1,9 @@
 # Pitch Perfect: Predicting Soccer Game Positioning
 
+## Demo Video (click on image): 
+[![Pitch Perfect Demo](http://img.youtube.com/vi/wSdZr7G1JDo/0.jpg)](https://www.youtube.com/watch?v=wSdZr7G1JDo "Pitch Perfect Demo (Hackylytics 2024)")
+
+
 ## Instructions:
 1. Create `venv` and install necsessary libraries using the `requirements.txt` file.
 2. Run `streamlit run frontend.py` to begin the frontend service.
